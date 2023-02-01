@@ -1,10 +1,13 @@
 #include <bits/stdc++.h>
+#include<unistd.h>
+
 using namespace std;
 
 int main(){
     int tokens = 1, capacity = 100, request, rate = 10;
 
-    for(int i = 0; i<10; ++i){
+    while (true) {
+        sleep(1);
         tokens = min(tokens + rate, capacity);
         request = 23;
 
