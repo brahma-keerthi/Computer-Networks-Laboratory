@@ -18,7 +18,7 @@ class Graph():
 
         for _ in range(self.V - 1):
             for u, v, w in self.graph:
-                if dis[u] < w + dis[v]:
+                if dis[v] > w + dis[u] :
                     dis[v] = w + dis[u]
 
         self.printAns(dis)
