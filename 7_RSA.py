@@ -1,39 +1,45 @@
 import math
 
-def RSA(m):
-    p = int(input("Enter p >> "))
-    q = int(input("Enter q >> "))
-
+def generateKey(p,q):
     n = p*q
-
     phi = (p-1)*(q-1)
 
     e = 2
-    while e < phi :
-        if ( math.gcd(e, phi) == 1 and math.gcd(e, n) == 1):
+
+    while e<phi:
+        if math.gcd(e,phi)==1 and math.gcd(e,n)==1:
             break
+
         else:
-            e += 1
+            e = e+1
 
     d = 1
-    while math.fmod(d*e , phi) != 1:
-        d += 1
 
-    print("\n\nOriginal Message >> " + str(m))
+    while math.fmod(d*e,phi) != 1:
+        d = d+1
 
-    encrypt = pow(m, e)
-    encrypt = math.fmod(encrypt, n)
+    return ((e,n),(d,n))
 
-    print("\nEncrypted Message >> " + str(encrypt))
+def encrypted(pk,plain):
+    e,n = pk
 
-    decrypt = pow(encrypt, d)
-    decrypt = math.fmod(decrypt, n)
+    cipher = [(ord(char) ** e)%n for char in plain]
 
-    print("\nDecrypted Message >> " + str(int(decrypt)))
+    return cipher
 
-def main():
-    m = int(input("Enter the message >> "))
-    RSA(m)
+def decrypt(pk,cipher):
+    d,n = pk
+    plaintext = [chr((c**d)%n) for c in cipher]
 
-if __name__ == '__main__':
-    main()
+    return "".join(plaintext)
+
+if __name__ == "__main__":
+    p = 101
+    q = 103
+    
+    public, private = generateKey(p,q)
+    print("Enter the message to be decrypted: ")
+    msg = input()
+    cipher = encrypted(public,msg)
+    print(f"The ciphertext for orginal message is: {cipher}")
+    print(f"The decypted message is: {decrypt(private,cipher)}")
